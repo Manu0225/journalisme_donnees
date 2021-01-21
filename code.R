@@ -2,4 +2,4 @@
 #library(readxl)
 #feuilles = c("Réseau HD", "Communes")
 #df = read_excel("2020t3-obs-hd-thd-deploiement.xlsx", sheet = feuilles[2])
-df = read.csv("communes.csv", sep=";")
+df = read.csv("communes.csv", sep=";", fileEncoding  = "utf8")
