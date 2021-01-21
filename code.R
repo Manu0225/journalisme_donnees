@@ -4,11 +4,18 @@ library(dplyr)
 library(readxl)
 library(tidyverse)
 
-df_régions = read_excel("codes_régions.csv")
-
+df_regions = read.csv("codes_régions.csv", sep=';', fileEncoding = "utf8",
+                      
+                      )[,c(1,6)]
+df_regions$reg = as.numeric(as.character(df_regions$reg))
 # Excel
 df <- read_excel('2020t3-obs-hd-thd-deploiement.xlsx', sheet = "Communes", range = "A5:AA35366")
+df$`Code région` = as.numeric(as.character(df$`Code région`))
 
+df["reg"] = df$`Code région`
+df = df %>% left_join(df_regions, by = c("Code région" = "reg"))
+df$reg <- NULL
+colnames(df)[colnames(df)=="libelle"] <- "Nom région"
 # CSV
 #ddeploiement2 = read.csv2('communes.csv')
 #attach(deploiement2)
@@ -44,42 +51,40 @@ hist(df$`proportion de logements fibrés au T3 2020`,
 
 
 ##  BOXPLOT 
-# boxplot(df$`Commune rurale`,
-#         proportion)
-# 
-# ToothGrowth$dose <- as.factor(ToothGrowth$dose)
-# 
 
-p<-ggplot(df,
-          aes(x=`Commune rurale`,
-              group=`Commune rurale`,
-              y=`proportion de logements fibrés au T3 2020`)) +
-  geom_boxplot()
-p
 
-g<- ggplot(df, 
-           aes(x=`Code région`,
-               group=`Code région`,
+# p<-ggplot(df,
+#           aes(x=`Commune rurale`,
+#               group=`Commune rurale`,
+#               y=`proportion de logements fibrés au T3 2020`)) +
+#   geom_boxplot()
+# p
+# 
+g<- ggplot(df,
+           aes(x=`Nom région`,
+               group=`Nom région`,
                y=`proportion de logements fibrés au T3 2020`,
-               color = 'Code région')
+               color = 'Nom région')
            #alpha=0
            )
 
-g  + geom_boxplot(alpha=0.5)
-
-# MOYENNES PONDÉRÉES PAR NB DE LOCAUX DANS CHAQUE DÉP/RÉGION/EPCI
-
-df = df %>%
-  group_by(`Code région`) %>% 
-  mutate(prop_pondérée =
-           weighted.mean(`proportion de logements fibrés au T3 2020`,
-                         `Meilleure estimation des locaux à date`))
-
-g<- ggplot(df,
-           aes(x=df$`Code région`,
-               y=df$prop_pondérée))
-
-g + geom_jitter()
+g  +
+  geom_boxplot(alpha=0.5) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+# 
+# # MOYENNES PONDÉRÉES PAR NB DE LOCAUX DANS CHAQUE DÉP/RÉGION/EPCI
+# 
+# df = df %>%
+#   group_by(`Code région`) %>% 
+#   mutate(prop_pondérée =
+#            weighted.mean(`proportion de logements fibrés au T3 2020`,
+#                          `Meilleure estimation des locaux à date`))
+# 
+# g<- ggplot(df,
+#            aes(x=df$`Code région`,
+#                y=df$prop_pondérée))
+# 
+# g + geom_jitter()
 # POURQUOII CERTIANS SONT >1 ?????
 
 # 0 = PAS DE DONNÉES OU VRAIMENT 0 ?
