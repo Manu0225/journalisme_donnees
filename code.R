@@ -66,7 +66,22 @@ g<- ggplot(df,
                y=`proportion de logements fibrés au T3 2020`,
                color = 'Nom région')
            #alpha=0
-           )
+)
+
+g  +
+  geom_boxplot(alpha=0.5) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+
+# 
+#df$
+g<- ggplot(df,
+           aes(x=`Code département`,
+               group=`Code département`,
+               y=`proportion de logements fibrés au T3 2020`,
+               color = 'Code dép')
+           #alpha=0
+)
 
 g  +
   geom_boxplot(alpha=0.5) +
