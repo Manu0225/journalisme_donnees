@@ -3,19 +3,38 @@ library(dplyr)
 #library(tidyverse)
 library(readxl)
 library(tidyverse)
+library(leaps)
+library(MASS)
 
-df_regions = read.csv("codes_régions.csv", sep=';', fileEncoding = "utf8",
-                      
+df_hotels = read_excel("data/hotels2.xlsx", sheet="COM", range = "A5:M34973"
+                       )[,c(1,11,12)]
+
+
+df_hlm = read_excel("data/HLM.xls", sheet="Commune", range = "B2:L16915"
+)[-c(1,2) ,c(1,11)]
+
+
+df_regions = read.csv("data/codes_régions.csv", sep=';', fileEncoding = "utf8",
                       )[,c(1,6)]
 df_regions$reg = as.numeric(as.character(df_regions$reg))
 # Excel
-df <- read_excel('2020t3-obs-hd-thd-deploiement.xlsx', sheet = "Communes", range = "A5:AA35366")
+df <- read_excel('data/2020t3-obs-hd-thd-deploiement.xlsx', sheet = "Communes", range = "A5:AA35366")
 df$`Code région` = as.numeric(as.character(df$`Code région`))
 
+
+## NOM DES RÉGIONS
 df["reg"] = df$`Code région`
 df = df %>% left_join(df_regions, by = c("Code région" = "reg"))
 df$reg <- NULL
 colnames(df)[colnames(df)=="libelle"] <- "Nom région"
+
+## HOTELS 
+df = df %>% left_join(df_hotels, by = c("Code commune" = "CODGEO"))
+## HLM
+df = df %>% left_join(df_hlm, by = c("Code commune" = "Commune"))
+
+colnames(df)[colnames(df)=="Densité pour 100 résidences principales (source : RP 2016)"] <-
+  "Proportion de HLM"
 # CSV
 #ddeploiement2 = read.csv2('communes.csv')
 #attach(deploiement2)
@@ -24,7 +43,22 @@ colnames(df)[colnames(df)=="libelle"] <- "Nom région"
 #Data exploration
 #summary(df)
 
+df$`Proportion de HLM`[is.na(df["Proportion de HLM"])] <- 0
+df["Proportion de HLM"] = df["Proportion de HLM"]/100
+
+#df[is.na(df)] <- 0
+
+df["Équipements touristiques"] = df["Hôtel"] + df["Camping"]
+
 df['proportion de logements fibrés au T3 2020'] = df[["T3 2020"]]/df[["Meilleure estimation des locaux à date"]]
+
+#step(lm(df~1,df$`proportion de logements fibrés au T3 2020`), df~.,
+     #data=conso_voit, direction="both")
+
+## TENTER D’ISOLER VILLES SANS FIBRE ET VILLES AVEC FIBRE
+log.model <- glm(default_payment ~., data = train, family = binomial(link = "logit"))
+summary(log.model)
+
 
 hist(df$`proportion de logements fibrés au T3 2020`,
      breaks=100,
