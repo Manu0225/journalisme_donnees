@@ -9,7 +9,7 @@ library(MASS)
 library(ggrepel)
 #library(matplot)
 
-source("ouvrir_donnees.R",encoding = "utf8")
+source("init_données.R",encoding = "utf8")
 
 ## TENTER D’ISOLER VILLES SANS FIBRE ET VILLES AVEC FIBRE
 
