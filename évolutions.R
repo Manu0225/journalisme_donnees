@@ -88,21 +88,21 @@ plot_evolution_fibre = function(df_évol) {
   #print(end_points)
   myplot <- myplot +
     geom_text_repel(
-      aes(label = label),
+      aes(label = Delta),
       data = end_points_1,
       fontface = "plain",
       color = "blue",
       size = 3
     ) +
     geom_text_repel(
-      aes(label = label),
+      aes(label = Delta),
       data = end_points_2,
       fontface = "plain",
       color = "purple",
       size = 3
     ) +
     geom_text_repel(
-      aes(label = label),
+      aes(label = Delta),
       data = end_points_3,
       fontface = "plain",
       color = "red",
@@ -145,9 +145,10 @@ run = function() {
   
   df_évol_guadeloupe[df_évol_guadeloupe$`catégorie de croissance` == 2, ]
   
-  ks.test(df_évol_guadeloupe[df_évol_guadeloupe$`catégorie de croissance` == 2, ]$label,
-          df_évol_paca[df_évol_paca$`catégorie de croissance` == 2, ]$label)
-  ks.test(df_évol_paca[df_évol_paca$`catégorie de croissance` == 3, ]$label,
-          df_évol_paca[df_évol_paca$`catégorie de croissance` == 2, ]$label)
+  ks.test(df_évol_guadeloupe[df_évol_guadeloupe$`catégorie de croissance` == 2, ]$Delta,
+          df_évol_paca[df_évol_paca$`catégorie de croissance` == 2, ]$Delta)
+  ks.test(df_évol_paca[df_évol_paca$`catégorie de croissance` == 3, ]$Delta,
+          df_évol_paca[df_évol_paca$`catégorie de croissance` == 2, ]$Delta)
   
 }
+run()
