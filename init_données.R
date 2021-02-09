@@ -1,9 +1,9 @@
 
-données_bâtiments = read.csv(
-  "data/mv_immeubles_2020t3.csv",
-  fileEncoding = "utf8",
-  colClasses = c(rep("NULL", 8), rep(NA, 4), "NULL", rep(NA, 4))
-)
+# données_bâtiments = read.csv(
+#   "data/mv_immeubles_2020t3.csv",
+#   fileEncoding = "utf8",
+#   colClasses = c(rep("NULL", 8), rep(NA, 4), "NULL", rep(NA, 4))
+# )
 
 
 df_hotels = read_excel("data/hotels2.xlsx", sheet = "COM", range = "A5:M34973")[, c(1, 11, 12)]
@@ -14,7 +14,7 @@ df_hlm = read_excel("data/HLM.xls", sheet = "Commune", range = "B2:L16915")[-c(1
 
 df_regions = read.csv("data/codes_régions.csv",
                       sep = ';',
-                      fileEncoding = "utf8",)[, c(1, 6)]
+                      fileEncoding = "utf8")[, c(1, 6)]
 df_regions$reg = as.numeric(as.character(df_regions$reg))
 # Excel
 df <-
