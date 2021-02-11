@@ -32,6 +32,8 @@ colnames(df)[colnames(df) == "libelle"] <- "Nom région"
 
 ## HOTELS
 df = df %>% left_join(df_hotels, by = c("Code commune" = "CODGEO"))
+df$`Hôtel` = as.numeric(as.character(df$`Hôtel`))
+df$`Camping` = as.numeric(as.character(df$`Camping`))
 ## HLM
 df = df %>% left_join(df_hlm, by = c("Code commune" = "Commune"))
 

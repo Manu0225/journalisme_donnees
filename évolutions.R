@@ -109,7 +109,7 @@ plot_evolution_fibre = function(df_évol) {
       size = 3
     )
   print(myplot)
-  return(df_évol)
+  #return(df_évol)
 }
 
 
@@ -117,11 +117,7 @@ plot_evolution_fibre = function(df_évol) {
 run = function() {
   ## CHOIX DE LA ZONE
   df_évol_paca = df_paca_avec_fibre[df_paca_avec_fibre$`Meilleure estimation des locaux à date` >
-                                      10000, ][c(1, 2, 3, 4, 10, 16:27)]
-  
-  df_évol_paca_samplé  = df_évol_paca[sample(c(0:nrow(df_évol_paca)), size =
-                                               10), ]
-  
+                                      0, ][c(1, 2, 3, 4, 10, 16:27)]
   
   df_évol_martinique = df_martinique_avec_fibre[c(1, 2, 3, 4, 10, 16:27)]
   
@@ -133,16 +129,19 @@ run = function() {
   # GUADELOUPE
   df_évol_guadeloupe = reformat_data_frame(normaliser(df_évol_guadeloupe))
   
-  df_évol_guadeloupe = plot_evolution_fibre(df_évol_guadeloupe)
+  plot_evolution_fibre(df_évol_guadeloupe)
   # PACA
   df_évol_paca = reformat_data_frame(normaliser(df_évol_paca))
   
-  df_évol_paca = plot_evolution_fibre(df_évol_paca)
+  df_évol_paca_samplé  = df_évol_paca[sample(c(0:nrow(df_évol_paca)), size =
+                                               10), ]
+  
+  plot_evolution_fibre(df_évol_paca_samplé)
   
   # MARTINIQUE
   df_évol_martinique = reformat_data_frame(normaliser(df_évol_martinique))
   
-  df_évol_martinique = plot_evolution_fibre(df_évol_martinique)
+  plot_evolution_fibre(df_évol_martinique)
   
   
   df_évol_guadeloupe[df_évol_guadeloupe$`catégorie de croissance` == 2, ]
