@@ -1,5 +1,5 @@
 source("init_données.R", encoding = "utf8")
-
+library(ggrepel)
 
 taux_évolution = function(t) {
   n = length(t)
@@ -112,6 +112,8 @@ plot_evolution_fibre = function(df_évol) {
   return(df_évol)
 }
 
+
+
 run = function() {
   ## CHOIX DE LA ZONE
   df_évol_paca = df_paca_avec_fibre[df_paca_avec_fibre$`Meilleure estimation des locaux à date` >
@@ -149,6 +151,12 @@ run = function() {
           df_évol_paca[df_évol_paca$`catégorie de croissance` == 2, ]$Delta)
   ks.test(df_évol_paca[df_évol_paca$`catégorie de croissance` == 3, ]$Delta,
           df_évol_paca[df_évol_paca$`catégorie de croissance` == 2, ]$Delta)
-  
-}
-run()
+  return (list(df_évol_paca, df_évol_guadeloupe, df_évol_martinique))
+} 
+
+res = run()
+
+
+df_évol_paca = res[[1]]
+df_évol_guadeloupe = res[[2]]
+df_évol_martinique = res[[3]]

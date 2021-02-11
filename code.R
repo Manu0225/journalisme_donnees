@@ -8,6 +8,7 @@ library(MASS)
 #library(directlabels)
 library(ggrepel)
 #library(matplot)
+#test
 
 source("init_données.R",encoding = "utf8")
 
