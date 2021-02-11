@@ -117,11 +117,11 @@ plot_evolution_fibre = function(df_évol) {
 run = function() {
   ## CHOIX DE LA ZONE
   df_évol_paca = df_paca_avec_fibre[df_paca_avec_fibre$`Meilleure estimation des locaux à date` >
-                                      0, ][c(1, 2, 3, 4, 10, 16:27)]
+                                      0, ][c(1, 2, 3, 4, 10, 16:27, 15)]
   
-  df_évol_martinique = df_martinique_avec_fibre[c(1, 2, 3, 4, 10, 16:27)]
+  df_évol_martinique = df_martinique_avec_fibre[c(1, 2, 3, 4, 10, 16:27, 15)]
   
-  df_évol_guadeloupe = df_guadeloupe_avec_fibre[c(1, 2, 3, 4, 10, 16:27)]
+  df_évol_guadeloupe = df_guadeloupe_avec_fibre[c(1, 2, 3, 4, 10, 16:27, 15)]
   
   
   #df_évol = df_évol_paca_samplé
