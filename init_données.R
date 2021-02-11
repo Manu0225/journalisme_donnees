@@ -62,6 +62,13 @@ df["Communes avec fibre"] = ifelse(df$'T3 2020' != 0, 1, 0)
 #df_évol$
 
 #df_évol_guadeloupe = df_évol[df_évol$ 971]]
+df_vaucluse = df[df$`Code département` == 84, ]
+df_vaucluse_avec_fibre = df_vaucluse[df_vaucluse$`Communes avec fibre` ==
+                                       1, ]
+  
+df_guyane =  df[df$`Code département` == 973, ]
+df_guyane_avec_fibre = df_guyane[df_guyane$`Communes avec fibre` ==
+                                   1, ]
 
 df_guadeloupe = df[df$`Code département` == 971, ]
 df_guadeloupe_avec_fibre = df_guadeloupe[df_guadeloupe$`Communes avec fibre` ==

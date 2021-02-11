@@ -114,8 +114,13 @@ plot_evolution_fibre = function(df_évol) {
 
 
 
-run = function() {
+create_df_évols = function() {
   ## CHOIX DE LA ZONE
+  df_évol_guyane = df_guyane_avec_fibre[c(1, 2, 3, 4, 10, 16:27)]
+  
+  df_évol_vaucluse = df_vaucluse_avec_fibre[c(1, 2, 3, 4, 10, 16:27)]
+  
+  
   df_évol_paca = df_paca_avec_fibre[df_paca_avec_fibre$`Meilleure estimation des locaux à date` >
                                       0, ][c(1, 2, 3, 4, 10, 16:27)]
   
@@ -124,38 +129,54 @@ run = function() {
   df_évol_guadeloupe = df_guadeloupe_avec_fibre[c(1, 2, 3, 4, 10, 16:27)]
   
   
-  #df_évol = df_évol_paca_samplé
   
+  #df_évol = df_évol_paca_samplé
+  # GUYANE
+  df_évol_guyane = reformat_data_frame(normaliser(df_évol_guyane))
+  #VAUCLUSE
+  df_évol_vaucluse = reformat_data_frame(normaliser(df_évol_vaucluse))
   # GUADELOUPE
   df_évol_guadeloupe = reformat_data_frame(normaliser(df_évol_guadeloupe))
   
-  plot_evolution_fibre(df_évol_guadeloupe)
   # PACA
   df_évol_paca = reformat_data_frame(normaliser(df_évol_paca))
   
   df_évol_paca_samplé  = df_évol_paca[sample(c(0:nrow(df_évol_paca)), size =
                                                10), ]
   
-  plot_evolution_fibre(df_évol_paca_samplé)
-  
   # MARTINIQUE
   df_évol_martinique = reformat_data_frame(normaliser(df_évol_martinique))
   
+  
+  return (list(df_évol_paca,
+               df_évol_guadeloupe, 
+               df_évol_martinique,
+               df_évol_vaucluse,
+               df_évol_guyane))
+} 
+
+plots = function(){
+  plot_evolution_fibre(df_évol_guadeloupe)
+  
+  plot_evolution_fibre(df_évol_paca_samplé)
+  
   plot_evolution_fibre(df_évol_martinique)
-  
-  
-  df_évol_guadeloupe[df_évol_guadeloupe$`catégorie de croissance` == 2, ]
+
+}
+
+tests = function(){
   
   ks.test(df_évol_guadeloupe[df_évol_guadeloupe$`catégorie de croissance` == 2, ]$Delta,
           df_évol_paca[df_évol_paca$`catégorie de croissance` == 2, ]$Delta)
   ks.test(df_évol_paca[df_évol_paca$`catégorie de croissance` == 3, ]$Delta,
           df_évol_paca[df_évol_paca$`catégorie de croissance` == 2, ]$Delta)
-  return (list(df_évol_paca, df_évol_guadeloupe, df_évol_martinique))
-} 
+}
 
-res = run()
+res = create_df_évols()
 
 
 df_évol_paca = res[[1]]
 df_évol_guadeloupe = res[[2]]
 df_évol_martinique = res[[3]]
+df_évol_vaucluse = res[[4]]
+df_évol_guyane = res[[5]]
