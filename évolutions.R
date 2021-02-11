@@ -142,7 +142,7 @@ create_df_évols = function() {
   df_évol_paca = reformat_data_frame(normaliser(df_évol_paca))
   
   df_évol_paca_samplé  = df_évol_paca[sample(c(0:nrow(df_évol_paca)), size =
-                                               10), ]
+                                               15), ]
   
   # MARTINIQUE
   df_évol_martinique = reformat_data_frame(normaliser(df_évol_martinique))
@@ -180,3 +180,5 @@ df_évol_guadeloupe = res[[2]]
 df_évol_martinique = res[[3]]
 df_évol_vaucluse = res[[4]]
 df_évol_guyane = res[[5]]
+
+plots()

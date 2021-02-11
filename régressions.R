@@ -6,11 +6,9 @@ régression = function(df, type, Delta = NULL, cat = NULL) {
       df$`proportion de logements fibrés au T3 2020` ~
         log(df$`Meilleure estimation des locaux à date`) +
         df$`Proportion de HLM` +
-        df$`Équipements touristiques`+
-        df$`Commune de montagne`,
+        df$`Équipements touristiques`,
       data = df
     )
-    #summary(model)
     par(mfrow=c(2,2))
     plot(model)
   }
@@ -19,26 +17,22 @@ régression = function(df, type, Delta = NULL, cat = NULL) {
       df$`Communes avec fibre` ~
         log(df$`Meilleure estimation des locaux à date`) +
         df$`Proportion de HLM` +
-        df$`Équipements touristiques`+
-        df$`Commune de montagne`,
+        df$`Équipements touristiques`,
       data = df,
       family = binomial(link = "logit")
     )
     par(mfrow=c(2,2))
     plot(model)
-    #summary(log.model)
   }
   
   if (type == "Delta"){
     model = lm(
-      Delta ~
+      log(Delta) ~
         log(df$`Meilleure estimation des locaux à date`) +
         df$`Proportion de HLM` +
-        df$`Équipements touristiques`+
-        df$`Commune de montagne`,
+        df$`Équipements touristiques`,
       data = df
     )
-    #summary(model)
     par(mfrow=c(2,2))
     plot(model)
     
@@ -51,49 +45,75 @@ régression = function(df, type, Delta = NULL, cat = NULL) {
       Delta ~
         log(df$`Meilleure estimation des locaux à date`) +
         df$`Proportion de HLM` +
-        df$`Équipements touristiques`+
-        df$`Commune de montagne`,
+        df$`Équipements touristiques`,
       data = df
     )
-    #summary(model)
     par(mfrow=c(2,2))
-    plot(model)
+    #plot(model)
   }  
-  
+  print(summary(model))
   return (model)
 }
 
 # regressions guadeloupe
 regression = régression(df_guadeloupe, "logistic")
-summary(regression)
 regression = régression(df_guadeloupe_avec_fibre, "linear")
-summary(regression)
 
 # regressions paca
 regression = régression(df_paca, "logistic")
-summary(regression)
 regression = régression(df_paca_avec_fibre, "linear")
-summary(regression)
+
+# regressions vaucluse
+regression = régression(df_vaucluse, "logistic")
+regression = régression(df_vaucluse_avec_fibre, "linear")
+
+# regressions guyane
+regression = régression(df_guyane, "logistic")
+regression = régression(df_guyane_avec_fibre, "linear")
 
 
-df_évol_guadeloupe = df_guadeloupe_avec_fibre[c(1, 2, 3, 4, 10, 16:27)]
+#Delta 
 
-df_évol_guadeloupe = reformat_data_frame(normaliser(df_évol_guadeloupe))
+# df_évol_guyane[df_évol_guyane$Delta <= 0,] = NA
 
 
 # regression guadeloupe 
 regression = régression(df_guadeloupe_avec_fibre, "Delta",
                         Delta = df_évol_guadeloupe$Delta)
-summary(regression)
+
+regression = régression(df_guadeloupe_avec_fibre, "Delta2",
+                        Delta = df_évol_guadeloupe$Delta,
+                        cat = df_évol_guadeloupe$'catégorie de croissance')
+
 
 # regression paca
 regression = régression(df_paca_avec_fibre, "Delta",
                         Delta = df_évol_paca$Delta)
-summary(regression)
 
 regression = régression(df_paca_avec_fibre, "Delta2",
                         Delta = df_évol_paca$Delta,
                         cat = df_évol_paca$'catégorie de croissance')
+# regression paca sans montagnes
 
-summary(regression)
+df_paca_avec_fibre_sans_montagnes = df_paca_avec_fibre[df_paca_avec_fibre$'Commune de montagne' == 0,]
+df_évol_paca_sans_montagnes = df_évol_paca[df_paca_avec_fibre$'Commune de montagne' == 0,]
+regression = régression(df_paca_avec_fibre_sans_montagnes, "Delta",
+                        Delta = df_évol_paca_sans_montagnes$Delta)
+
+# regression vaucluse
+regression = régression(df_vaucluse_avec_fibre, "Delta",
+                        Delta = df_évol_vaucluse$Delta)
+
+regression = régression(df_vaucluse_avec_fibre, "Delta2",
+                        Delta = df_évol_vaucluse$Delta,
+                        cat = df_évol_vaucluse$'catégorie de croissance')
+
+
+# regression guyane
+regression = régression(df_guyane_avec_fibre, "Delta",
+                        Delta = df_évol_guyane$Delta)
+
+regression = régression(df_guyane_avec_fibre, "Delta2",
+                        Delta = df_évol_guyane$Delta,
+                        cat = df_évol_guyane$'catégorie de croissance')
 

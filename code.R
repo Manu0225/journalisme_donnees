@@ -62,15 +62,17 @@ histo_prop_logements_fibrés = function(){
 ##  BOXPLOT
 
 
-# p<-ggplot(df,
-#           aes(x=`Commune rurale`,
-#               group=`Commune rurale`,
-#               y=`proportion de logements fibrés au T3 2020`)) +
-#   geom_boxplot()
-# p
-#
+p<-ggplot(df,
+          aes(x=`Commune rurale`,
+              group=`Commune rurale`,
+              y=`proportion de logements fibrés au T3 2020`)) +
+  geom_boxplot()
+p
+
 
 plots_different_scales = function() {
+  select = 1
+  if(select == 1){
   g <- ggplot(
     df,
     aes(
@@ -90,7 +92,9 @@ plots_different_scales = function() {
       hjust = 1
     ))
   
+  }
   
+  if(select == 2){
   #
   #df$
   g <- ggplot(
@@ -104,14 +108,16 @@ plots_different_scales = function() {
     #alpha=0
   )
   
+    }
   g  +
     geom_boxplot(alpha = 0.5) +
     theme(axis.text.x = element_text(
       angle = 90,
       vjust = 0.5,
-      hjust = 1
-    ))
+      hjust = 1))
 }
+
+plots_different_scales()
 #
 # # MOYENNES PONDÉRÉES PAR NB DE LOCAUX DANS CHAQUE DÉP/RÉGION/EPCI
 #
